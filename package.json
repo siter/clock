@@ -1,0 +1,13 @@
+{
+  "name": "clock",
+  "version": "0.0.1",
+  "repository": "git@github.com:siter/clock.git",
+  "description": "Angular Clock App",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"No unit tests and e2e tests yet\" && exit 1",
+    "prestart": "npm install"
+  },
+  "author": "Andrei Railean",
+  "license": "MIT"
+}
