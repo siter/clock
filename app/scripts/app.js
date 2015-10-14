@@ -19,17 +19,27 @@ angular
   ])
   .config(function ($routeProvider) {
     $routeProvider
-      .when('/', {
-        templateUrl: 'views/main.html',
-        controller: 'MainCtrl',
-        controllerAs: 'main'
+      .when('/worldclock', {
+        templateUrl: 'views/worldclock.html',
+        controller: 'WorldClockController',
+        controllerAs: 'vm'
       })
-      .when('/about', {
-        templateUrl: 'views/about.html',
-        controller: 'AboutCtrl',
-        controllerAs: 'about'
+      .when('/alarm', {
+        templateUrl: 'views/alarm.html',
+        controller: 'AlarmController',
+        controllerAs: 'vm'
+      })
+      .when('/stopwatch', {
+        templateUrl: 'views/stopwatch.html',
+        controller: 'StopWatchController',
+        controllerAs: 'vm'
+      })
+      .when('/timer', {
+        templateUrl: 'views/timer.html',
+        controller: 'TimerController',
+        controllerAs: 'vm'
       })
       .otherwise({
-        redirectTo: '/'
+        redirectTo: '/worldclock'
       });
   });

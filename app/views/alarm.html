@@ -1,0 +1,8 @@
+<div class='jumbotron'><h1>{{ vm.alarms[vm.active_alarm].time }}</h1></div>
+<h2>Alarms</h2>
+<ul>
+  <li ng-repeat="alarm in vm.alarms" ng-class="alarm.enabled? 'active':''">
+    {{ alarm.time }}
+    <span ng-if="alarm.enabled">(enabled)</span>
+  </li>
+</ul>
