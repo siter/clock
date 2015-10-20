@@ -42,5 +42,6 @@
   "scripts": {
     "test": "grunt test",
     "prestart": "npm install"
-  }
+  },
+  "dependencies": {}
 }
