@@ -1,61 +1,50 @@
-
 'use strict';
 
-/**
- * @ngdoc function
- * @name clockApp.controller:StopwatchController
- * @description
- * # StopwatchController
- * Controller of the clockApp
- */
-angular.module('clockApp')
-  .controller('StopWatchController', StopWatchController);
+var app = angular.module('clockApp');
 
-function StopWatchController($interval) {
-  var vm = this;
+function StopWatchService($interval) {
+  let state = {
+    total: 0,
+    laps: [],
+    current_lap: 0,
+    running: false
+  };
 
-  vm.total = 0;
+  this.state = state;
 
-  vm.laps = [];
-  vm.current_lap = 0;
-
-  vm.running = false;
-
-  vm.start = start;
-  vm.stop = stop;
-  vm.lap = lap;
-  vm.reset = reset;
-
-  var current_timer = null;
-  var timer_interval = 10;
+  let timer_interval = 10;
+  let current_timer = null;
 
   function update_time(){
-    vm.current_lap += timer_interval;
-    vm.total += timer_interval;
+    state.current_lap += timer_interval;
+    state.total += timer_interval;
   }
 
-  function start(){
-    vm.running = true;
-    current_timer = $interval(update_time, timer_interval);
-  }
+  state.start = function (){
+    var service = this;
 
-  function stop(){
-    vm.running = false;
+    state.running = true;
+    current_timer = $interval(update_time.bind(service), timer_interval);
+  };
+
+  state.stop = function (){
+    state.running = false;
     $interval.cancel(current_timer);
-    vm.lap();
-  }
+  };
 
-  function lap(){
-    var this_lap = vm.current_lap;
-    vm.laps.unshift(this_lap);
-    vm.current_lap = 0;
-  }
-
-  function reset(){
-    vm.total = 0;
-    vm.laps = [];
-  }
-
+  state.lap = function (){
+    var this_lap = state.current_lap;
+    state.current_lap = 0;
+    state.laps.unshift(this_lap);
+  };
 }
 
-StopWatchController.$inject = ['$interval'];
+StopWatchService.$inject = ['$interval'];
+app.service('StopWatchService', StopWatchService);
+
+function StopWatchController($scope, StopWatchService) {
+  $scope.timer = StopWatchService.state;
+}
+
+StopWatchController.$inject = ['$scope','StopWatchService'];
+app.controller('StopWatchController', StopWatchController);

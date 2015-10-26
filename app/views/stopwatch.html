@@ -1,26 +1,32 @@
-<h1 class="text-center">Stopwatch</h1>
+<h2 class="text-center">Stopwatch</h2>
 <div class="jumbotron">
-  <span>{{ vm.current_lap | amDateFormat:'mm:ss.SS' }}<span>
-  <h1>{{ vm.total | amDateFormat:'mm:ss.SS' }}</h1>
+  <span>{{ timer.current_lap | amDateFormat:'mm:ss.SS' }}<span>
+  <h1>{{ timer.total | amDateFormat:'mm:ss.SS' }}</h1>
 </div>
 
 <div class="container">
   <div class="row">
     <div class="col-sm-6 text-center">
-      <button type="button" class="btn btn-lg btn-warning" ng-if="vm.running" ng-click="vm.stop()">Stop</button>
-      <button type="button" class="btn btn-lg btn-warning" ng-if="!vm.running" ng-disabled="vm.total == 0" ng-click="vm.reset()">Reset</button>
+      <button type="button" class="btn btn-lg btn-default btn-block" ng-if="!timer.running" ng-disabled="timer.total == 0" ng-click="timer.reset()">Reset</button>
+      <button type="button" class="btn btn-lg btn-default btn-block" ng-if="timer.running" ng-click="timer.lap()">Lap</button>
     </div>
     <div class="col-sm-6 text-center">
-      <button type="button" class="btn btn-lg btn-success" ng-if="vm.running" ng-click="vm.lap()">Lap</button>
-      <button type="button" class="btn btn-lg btn-info" ng-if="!vm.running" ng-click="vm.start()">Start</button>
+      <button type="button" class="btn btn-lg btn-success btn-block" ng-if="!timer.running" ng-click="timer.start()">Start</button>
+      <button type="button" class="btn btn-lg btn-danger btn-block" ng-if="timer.running" ng-click="timer.stop()">Stop</button>
     </div>
   </div>
 </div>
 
-<table class="table table-striped">
-  <tr ng-repeat="lap in vm.laps">
-    <td class="text-right">
-      {{ lap | amDateFormat:'mm:ss.SS' }}
-    </td>
-  </tr>
-</table>
+<div class="container" ng-if="timer.laps.length">
+  <h3 class="text-center">Laps</h3>
+  <table class="table table-striped">
+    <tr ng-repeat="lap in timer.laps track by $index">
+      <td class="text-left">
+        Lap {{ timer.laps.length - $index }}
+      </td>
+      <td class="text-right">
+        {{ lap | amDateFormat:'mm:ss.SS' }}
+      </td>
+    </tr>
+  </table>
+</div>
