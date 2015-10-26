@@ -1,1 +1,29 @@
-<p>This is the TIMER view.</p>
+<div class="alert alert-warning" ng-if="timer.active && timer.time_left == 0">
+  Timer Done
+</div>
+<h2 class="text-center">Timer</h2>
+<div class="jumbotron">
+  <h1>{{ timer.time_left | amDateFormat:'mm:ss' }}</h1>
+</div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-xs-6 text-center">
+      <button
+        type="button"
+        class="btn btn-lg btn-default btn-block" ng-if="!timer.paused"
+        ng-disabled="!timer.active" ng-click="onPause()">Pause</button>
+      <button
+        type="button"
+        class="btn btn-lg btn-default btn-block" ng-if="timer.paused" ng-click="onResume()">Resume</button>
+    </div>
+    <div class="col-xs-6 text-center">
+      <button
+        type="button"
+        class="btn btn-lg btn-success  btn-block" ng-if="!timer.active" ng-click="onStart()">Start</button>
+      <button
+        type="button"
+        class="btn btn-lg btn-danger  btn-block" ng-if="timer.active" ng-click="onDone()">Done</button>
+    </div>
+  </div>
+</div>
