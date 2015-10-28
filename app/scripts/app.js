@@ -1,46 +1,44 @@
 'use strict';
 
-/**
- * @ngdoc overview
- * @name clockApp
- * @description
- * # clockApp
- *
- * Main module of the application.
- */
-angular
-  .module('clockApp', [
-    'ngAnimate',
-    'ngCookies',
-    'ngResource',
-    'ngRoute',
-    'ngSanitize',
-    'ngTouch',
-    'angularMoment'
-  ])
-  .config(function ($routeProvider) {
-    $routeProvider
-      .when('/worldclock', {
-        templateUrl: 'views/worldclock.html',
-        controller: 'WorldClockController',
-        controllerAs: 'vm'
-      })
-      .when('/alarm', {
-        templateUrl: 'views/alarm.html',
-        controller: 'AlarmController',
-        controllerAs: 'vm'
-      })
-      .when('/stopwatch', {
-        templateUrl: 'views/stopwatch.html',
-        controller: 'StopWatchController',
-        controllerAs: 'vm'
-      })
-      .when('/timer', {
-        templateUrl: 'views/timer.html',
-        controller: 'TimerController',
-        controllerAs: 'vm'
-      })
-      .otherwise({
-        redirectTo: '/worldclock'
-      });
-  });
+var app = angular.module('clockApp', [
+  'ngAnimate',
+  'ngCookies',
+  'ngResource',
+  'ngSanitize',
+  'ngTouch',
+  'angularMoment',
+  'ui.router'
+]);
+
+app.config(function($stateProvider, $urlRouterProvider) {
+
+  // For any unmatched url, redirect to /state1
+  $urlRouterProvider.otherwise("/worldclock");
+
+  $stateProvider
+    .state('worldclock', {
+      url: '/worldclock',
+      templateUrl: 'views/worldclock.html',
+      controller: 'WorldClockController',
+      controllerAs: 'vm'
+    })
+    .state('alarm', {
+      url: '/alarm',
+      templateUrl: 'views/alarm.html',
+      controller: 'AlarmController',
+      controllerAs: 'vm'
+    })
+    .state('stopwatch', {
+      url: '/stopwatch',
+      templateUrl: 'views/stopwatch.html',
+      controller: 'StopWatchController',
+      controllerAs: 'vm'
+    })
+    .state('timer', {
+      url: '/timer',
+      templateUrl: 'views/timer.html',
+      controller: 'TimerController',
+      controllerAs: 'vm'
+    });
+
+});

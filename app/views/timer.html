@@ -1,9 +1,10 @@
-<div class="alert alert-warning" ng-if="timer.active && timer.time_left == 0">
-  Timer Done
-</div>
 <h2 class="text-center">Timer</h2>
 <div class="jumbotron">
-  <h1>{{ timer.time_left | amDateFormat:'mm:ss' }}</h1>
+  <span>Set Time: {{ moment.utc(timer.time_set).format("mm:ss") }}<span>
+  <h1>
+    <span ng-if="timer.time_left > 0">{{ moment.utc(timer.time_left).format("mm:ss") }}</span>
+    <span ng-if="timer.time_left == 0" class="text-success">Timer DONE</span>
+  </h1>
 </div>
 
 <div class="container">
@@ -12,7 +13,7 @@
       <button
         type="button"
         class="btn btn-lg btn-default btn-block" ng-if="!timer.paused"
-        ng-disabled="!timer.active" ng-click="onPause()">Pause</button>
+        ng-disabled="!timer.active || timer.time_left == 0" ng-click="onPause()">Pause</button>
       <button
         type="button"
         class="btn btn-lg btn-default btn-block" ng-if="timer.paused" ng-click="onResume()">Resume</button>

@@ -10,7 +10,7 @@ function TimerService($interval) {
   let timer = {};
 
   function init(){
-    timer.time_set = 20000;
+    timer.time_set = 5000;
     timer.time_left = timer.time_set;
     timer.hours = 6;
     timer.minutes = 10;
@@ -25,7 +25,6 @@ function TimerService($interval) {
 
     if (timer.time_left <= 0) {
       timer.time_left = 0;
-      timer.finished = true;
       $interval.cancel(js_interval);
     }
   }
@@ -63,8 +62,9 @@ TimerService.$inject = ['$interval'];
 app.service('TimerService', TimerService);
 
 
-function TimerController($scope, TimerService) {
+function TimerController($scope, TimerService, moment) {
   $scope.timer = TimerService.timer;
+  $scope.moment = moment;
 
   $scope.onStart = function () {
     TimerService.start();
@@ -82,5 +82,5 @@ function TimerController($scope, TimerService) {
     TimerService.resume();
   };
 }
-TimerController.$inject = ['$scope', 'TimerService'];
+TimerController.$inject = ['$scope', 'TimerService', 'moment'];
 app.controller('TimerController', TimerController);
