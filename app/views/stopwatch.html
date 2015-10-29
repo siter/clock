@@ -20,13 +20,31 @@
 <div class="container" ng-if="timer.laps.length">
   <h3 class="text-center">Laps</h3>
   <table class="table table-striped">
-    <tr ng-repeat="lap in timer.laps track by $index">
-      <td class="text-left">
-        Lap {{ timer.laps.length - $index }}
-      </td>
-      <td class="text-right">
-        {{ lap | amDateFormat:'mm:ss.SS' }}
-      </td>
-    </tr>
+    <thead>
+      <tr>
+        <th>
+          Lap No.
+        </th>
+        <th class="text-right">
+          Lap Time
+        </th>
+        <th class="text-right">
+          Total
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="lap in timer.laps track by $index">
+        <td class="text-left">
+          {{ timer.laps.length - $index }}
+        </td>
+        <td class="text-right">
+          {{ lap.time | amDateFormat:'mm:ss.SS' }}
+        </td>
+        <td class="text-right">
+          {{ lap.total | amDateFormat:'mm:ss.SS' }}
+        </td>
+      </tr>
+    </tbody>
   </table>
 </div>

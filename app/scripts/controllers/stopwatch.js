@@ -33,7 +33,11 @@ function StopWatchService($interval) {
   };
 
   state.lap = function (){
-    var this_lap = state.current_lap;
+    var this_lap = {
+      time: state.current_lap,
+      total: state.total
+    };
+
     state.current_lap = 0;
     state.laps.unshift(this_lap);
   };
