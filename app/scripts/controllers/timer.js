@@ -3,37 +3,45 @@
 var app = angular.module('clockApp');
 
 function TimerService($interval) {
-  // 1 second (in millis)
-  const TIMER_INTERVAL = 1000;
+  // 1 second (in milliseconds)
+  const UPDATE_INTERVAL = 100;
 
   let js_interval;
-  let timer = {};
+  let t = {};
+
+  let hours = 0,
+      minutes = 0,
+      seconds = 5;
 
   function init(){
-    timer.time_set = 5000;
-    timer.time_left = timer.time_set;
-    timer.hours = 6;
-    timer.minutes = 10;
-    timer.active = false;
-    timer.paused = false;
+    t.active = false;
+    t.paused = false;
+
+    t.countdown = t.set = to_milliseconds(hours, minutes, seconds);
+  }
+
+  function to_milliseconds(hours, minutes, seconds) {
+    var result = (seconds + minutes * 60 + hours * 60 * 60 ) * 1000;
+    return result;
   }
 
   init();
 
   function update_time(){
-    timer.time_left -= TIMER_INTERVAL;
+    t.countdown -= UPDATE_INTERVAL;
 
-    if (timer.time_left <= 0) {
-      timer.time_left = 0;
+    if (t.countdown <= 0) {
+      t.countdown = 0;
       $interval.cancel(js_interval);
     }
   }
 
   function start(){
-    var service = this;
+    t.active = true;
 
-    js_interval = $interval(update_time.bind(service), TIMER_INTERVAL);
-    timer.active = true;
+    js_interval = $interval(() => {
+      update_time();
+    }, UPDATE_INTERVAL);
   }
 
   function done(){
@@ -43,15 +51,15 @@ function TimerService($interval) {
 
   function pause(){
     $interval.cancel(js_interval);
-    timer.paused = true;
+    t.paused = true;
   }
 
   function resume(){
-    timer.paused = false;
+    t.paused = false;
     start();
   }
 
-  this.timer = timer;
+  this.timer = t;
 
   this.done = done;
   this.start = start;
@@ -62,25 +70,30 @@ TimerService.$inject = ['$interval'];
 app.service('TimerService', TimerService);
 
 
-function TimerController($scope, TimerService, moment) {
+function TimerController($scope, $injector) {
+
+  let TimerService = $injector.get('TimerService');
+  let moment = $injector.get('moment');
+
   $scope.timer = TimerService.timer;
   $scope.moment = moment;
 
-  $scope.onStart = function () {
-    TimerService.start();
+  $scope.onStart =
+    () => TimerService.start();
+
+  $scope.onPause =
+    () => TimerService.pause();
+
+  $scope.onDone =
+    () => TimerService.done();
+
+  $scope.onResume =
+    () => TimerService.resume();
+
+  $scope.format = time => {
+    return moment(time).utc().format("HH:mm:ss.S");
   };
 
-  $scope.onPause = function () {
-    TimerService.pause();
-  };
-
-  $scope.onDone = function () {
-    TimerService.done();
-  };
-
-  $scope.onResume = function () {
-    TimerService.resume();
-  };
 }
-TimerController.$inject = ['$scope', 'TimerService', 'moment'];
+TimerController.$inject = ['$scope', '$injector'];
 app.controller('TimerController', TimerController);
