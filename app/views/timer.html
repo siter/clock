@@ -1,10 +1,29 @@
 <h2 class="text-center">Timer</h2>
-<div class="jumbotron">
-  <span>Set Time: {{ format(timer.set) }}<span>
-  <h1>
-    <span ng-if="timer.countdown > 0">{{ format(timer.countdown) }}</span>
-    <span ng-if="timer.countdown == 0" class="text-success">Timer DONE</span>
-  </h1>
+<div class="jumbotron" ng-switch="timer.active">
+  <div ng-switch-when="true">
+    <span>Set Time: {{ format(timer.set) }}<span>
+    <h1>
+      <span ng-if="timer.countdown > 0">{{ format(timer.countdown) }}</span>
+      <span ng-if="timer.countdown == 0" class="text-success">Timer DONE</span>
+    </h1>
+  </div>
+
+  <form class="form-inline" ng-switch-when="false">
+    <div class="form-group">
+      <label>Hours:</label>
+      <input
+        class="form-control input-lg"
+        type="number"
+        ng-model="timer.hours" />
+    </div>
+    <div class="form-group">
+      <label>Minutes:</label>
+      <input
+        class="form-control input-lg"
+        type="number"
+        ng-model="timer.minutes" />
+    </div>
+  </form>
 </div>
 
 <div class="container">

@@ -7,22 +7,21 @@ function TimerService($interval) {
   const UPDATE_INTERVAL = 100;
 
   let js_interval;
-  let t = {};
-
-  let hours = 0,
-      minutes = 0,
-      seconds = 5;
+  let t = {
+    hours: 0,
+    minutes: 3,
+    seconds: 0
+  };
 
   function init(){
     t.active = false;
     t.paused = false;
 
-    t.countdown = t.set = to_milliseconds(hours, minutes, seconds);
+    init_time();
   }
 
-  function to_milliseconds(hours, minutes, seconds) {
-    var result = (seconds + minutes * 60 + hours * 60 * 60 ) * 1000;
-    return result;
+  function init_time() {
+    t.countdown = t.set = (t.minutes * 60 + t.hours * 60 * 60 ) * 1000;
   }
 
   init();
@@ -37,6 +36,7 @@ function TimerService($interval) {
   }
 
   function start(){
+    init();
     t.active = true;
 
     js_interval = $interval(() => {
@@ -78,8 +78,9 @@ function TimerController($scope, $injector) {
   $scope.timer = TimerService.timer;
   $scope.moment = moment;
 
-  $scope.onStart =
-    () => TimerService.start();
+  $scope.onStart = () => {
+    TimerService.start();
+  };
 
   $scope.onPause =
     () => TimerService.pause();
@@ -90,10 +91,8 @@ function TimerController($scope, $injector) {
   $scope.onResume =
     () => TimerService.resume();
 
-  $scope.format = time => {
-    return moment(time).utc().format("HH:mm:ss.S");
-  };
-
+  $scope.format =
+    time => moment(time).utc().format("HH:mm:ss.S");
 }
 TimerController.$inject = ['$scope', '$injector'];
 app.controller('TimerController', TimerController);
